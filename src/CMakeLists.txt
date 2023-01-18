@@ -1,0 +1,23 @@
+set(SRC_LIST
+Application.cpp
+Camera.cpp
+IndexBuffer.cpp
+Renderer.cpp
+Shader.cpp
+VertexArray.cpp
+VertexBuffer.cpp
+VertexBufferLayout.cpp
+Application.cpp
+)
+
+add_executable(Tachyon ${SRC_LIST})
+
+target_include_directories(Tachyon PRIVATE 
+${DEPENDENCIES_DIR}/glad/include
+${DEPENDENCIES_DIR}/glfw/include
+${DEPENDENCIES_DIR}/glm
+)
+
+target_link_libraries(Tachyon PRIVATE
+glad
+glfw)
