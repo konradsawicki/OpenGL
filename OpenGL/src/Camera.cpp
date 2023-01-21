@@ -3,17 +3,17 @@
 #include "glm/gtx/transform.hpp"
 #include "GLFW/glfw3.h"
 
-Camera::Camera(glm::vec2 FOV, float AspectRatio, float NearPlanePosition, float FarPlanePosition)
+Camera::Camera(float FOVy, float AspectRatio, float NearPlanePosition, float FarPlanePosition)
 	: m_Position(0.f, 0.f, 0.f), m_ViewDirection(0.f, 0.f, -1.f), 
 	  m_UpVector(0.f, 1.f, 0.f), m_OldMousePos(0.f, 0.f),
-	  m_FieldOfView(FOV), m_AspectRatio(AspectRatio),
+	  m_FieldOfView_Y(FOVy), m_AspectRatio(AspectRatio),
 	  m_NearPlanePosition(NearPlanePosition), m_FarPlanePosition(FarPlanePosition)
 {
 }
 
-void Camera::SetFieldOfView(glm::vec2 FOV)
+void Camera::SetFieldOfView(float FOVy)
 {
-	m_FieldOfView = FOV;
+	m_FieldOfView_Y = FOVy;
 }
 
 void Camera::SetAspectRatio(float AspectRatio)
@@ -33,17 +33,23 @@ void Camera::SetFarPlanePosition(float FarPlanePosition)
 
 glm::mat4 Camera::GetProjectionMatrix() const
 {
-	return glm::perspective(glm::radians(m_FieldOfView.y), m_AspectRatio, m_NearPlanePosition, m_FarPlanePosition);
+	return glm::perspective(glm::radians(m_FieldOfView_Y), m_AspectRatio, m_NearPlanePosition, m_FarPlanePosition);
 }
 
-glm::mat4 Camera::GetWorldToViewMatrix() const
+glm::mat4 Camera::GetViewMatrix() const
 {
 	return glm::lookAt(m_Position, m_Position + m_ViewDirection, m_UpVector);
 }
 
-void Camera::UpdateMousePosition(glm::vec2 NewMousePos)
+void Camera::Update(glm::vec2 NewMousePos)
 {
 	glm::vec2 MouseDelta = NewMousePos - m_OldMousePos;
-	m_ViewDirection = glm::mat3(glm::rotate(MouseDelta.x * 0.01f, m_UpVector)) * m_ViewDirection;
+	const float rotational_speed = 0.002f;
+	glm::vec3 RightVector = glm::cross(m_ViewDirection, m_UpVector);
+	glm::mat4 Rotator = glm::rotate(MouseDelta.x * rotational_speed, m_UpVector) *
+						glm::rotate(MouseDelta.y * rotational_speed, RightVector);
+
+	m_ViewDirection = glm::mat3(Rotator) * m_ViewDirection;
+
 	m_OldMousePos = NewMousePos;
 }

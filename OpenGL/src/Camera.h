@@ -4,7 +4,7 @@
 class Camera
 {
 public:
-	Camera(glm::vec2 FOV, float AspectRatio, float NearPlanePosition, float FarPlanePosition);
+	Camera(float FOVy, float AspectRatio, float NearPlanePosition, float FarPlanePosition);
 
 private:
 	glm::vec3 m_Position;
@@ -13,21 +13,23 @@ private:
 
 	glm::vec2 m_OldMousePos;
 
-	glm::vec2 m_FieldOfView;
+	float m_FieldOfView_Y;
 	float m_AspectRatio;
 	float m_NearPlanePosition;
 	float m_FarPlanePosition;
 
 public:
-	void SetFieldOfView(glm::vec2 FOV);
+	void SetFieldOfView(float FOVy);
 	void SetAspectRatio(float AspectRatio);
 	void SetNearPlanePosition(float NearPlanePosition);
 	void SetFarPlanePosition(float FarPlanePosition);
 
-	glm::mat4 GetProjectionMatrix() const;
-	glm::mat4 GetWorldToViewMatrix() const;
-
-	void UpdateMousePosition(glm::vec2 NewMousePos);
+	
+	glm::mat4 GetProjectionMatrix() const; // View space to Clip space
+	glm::mat4 GetViewMatrix() const; // World space to View space
+	// Clip space To NDC is done by OpenGL (division of vertices' positions by w) 
+	
+	void Update(glm::vec2 NewMousePos);
 
 
 	

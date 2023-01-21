@@ -3,9 +3,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include <string>
-
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <sstream>
 
@@ -30,7 +29,7 @@ int main(void)
     int height = 480;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -142,7 +141,7 @@ int main(void)
 
         double mouse_xpos, mouse_ypos;
         float AspectRatio = (float)(width) / height;
-        Camera camera({60.0f * AspectRatio, 60.0f }, AspectRatio, 0.1f, 10.0f);
+        Camera camera(60.0f, AspectRatio, 0.1f, 10.0f);
 
         va.Unbind();
         vb.Unbind();
@@ -157,15 +156,13 @@ int main(void)
             glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
             renderer.Clear();
           
-            camera.UpdateMousePosition(glm::vec2(mouse_xpos, mouse_ypos));
+            camera.Update(glm::vec2(mouse_xpos, mouse_ypos));
 
             glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
             glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 1.0f));
             glm::mat4 ModelToWorldMatrix = TranslationMatrix * RotationMatrix;     
 
-            glm::mat4 TransformationMatrix = camera.GetProjectionMatrix() * camera.GetWorldToViewMatrix() * ModelToWorldMatrix;
-            // ClipToNDC is done by OpenGL (division of vertices' positions by w)                                               
-
+            glm::mat4 TransformationMatrix = camera.GetProjectionMatrix() * camera.GetViewMatrix() * ModelToWorldMatrix;
 
             shader.Bind();
             shader.SetUniformMat4("TransformationMatrix", TransformationMatrix);
