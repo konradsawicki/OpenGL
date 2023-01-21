@@ -10,7 +10,7 @@ private:
 	glm::vec3 m_Position;
 	glm::vec3 m_ViewDirection;
 	const glm::vec3 m_UpVector;
-
+	glm::vec3 m_RightVector;
 	glm::vec2 m_OldMousePos;
 
 	float m_FieldOfView_Y;
@@ -29,8 +29,6 @@ public:
 	glm::mat4 GetViewMatrix() const; // World space to View space
 	// Clip space To NDC is done by OpenGL (division of vertices' positions by w) 
 	
-	void Update(glm::vec2 NewMousePos);
-
-
-	
+	void Rotate(glm::vec2 NewMousePos);
+	void Translate(int key);
 };

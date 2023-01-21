@@ -17,26 +17,40 @@
 #include "Vertex.h"
 #include "Camera.h"
 
+static const int width = 1280;
+static const int height = 720;
+static const float AspectRatio = (float)width / height;
+
+static Camera camera(60.0f, AspectRatio, 0.1f, 10.0f);
+
+static double mouse_xpos, mouse_ypos;
+static void UpdateMouseInput(GLFWwindow* window, double xpos, double ypos)
+{
+    camera.Rotate(glm::vec2(xpos, ypos));
+}
+
+static void UpdateKeyboardInput(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if ((key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D) && action == GLFW_REPEAT)
+        camera.Translate(key);
+}
+
 int main(void)
 {
     GLFWwindow* window;
 
-    /* Initialize the library */
     if (!glfwInit())
         return -1;
 
-    int width = 640;
-    int height = 480;
-
-    /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    glfwSetCursorPosCallback(window, UpdateMouseInput);
+    glfwSetKeyCallback(window, UpdateKeyboardInput);
 
     if (glewInit() != GLEW_OK)
         std::cout << "GLEW error!\n";
@@ -139,10 +153,6 @@ int main(void)
 
         Shader shader("res/shaders/Basic.shader");
 
-        double mouse_xpos, mouse_ypos;
-        float AspectRatio = (float)(width) / height;
-        Camera camera(60.0f, AspectRatio, 0.1f, 10.0f);
-
         va.Unbind();
         vb.Unbind();
         ib.Unbind();
@@ -153,10 +163,8 @@ int main(void)
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
-            glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
             renderer.Clear();
-          
-            camera.Update(glm::vec2(mouse_xpos, mouse_ypos));
+         
 
             glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
             glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 1.0f));
@@ -173,7 +181,7 @@ int main(void)
             {
                 angle = 0.0f;
             }
-            angle += 0.01f;
+            //angle += 0.01f;
 
             glfwSwapBuffers(window);
             glfwPollEvents();
