@@ -16,6 +16,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Vertex.h"
+#include "Camera.h"
 
 int main(void)
 {
@@ -139,6 +140,10 @@ int main(void)
 
         Shader shader("res/shaders/Basic.shader");
 
+        double mouse_xpos, mouse_ypos;
+        float AspectRatio = (float)(width) / height;
+        Camera camera({60.0f * AspectRatio, 60.0f }, AspectRatio, 0.1f, 10.0f);
+
         va.Unbind();
         vb.Unbind();
         ib.Unbind();
@@ -149,19 +154,21 @@ int main(void)
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
-            /* Render here */
+            glfwGetCursorPos(window, &mouse_xpos, &mouse_ypos);
             renderer.Clear();
+          
+            camera.UpdateMousePosition(glm::vec2(mouse_xpos, mouse_ypos));
 
-            glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+            glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
             glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 1.0f));
-            glm::mat4 ModelToWorldMatrix = TranslationMatrix * RotationMatrix;                                                  // 1. step
-            // WorldToViewMatrix not needed - world space coincides with view space                                             // 2. step
-            glm::mat4 ViewToClipMatrix = glm::perspective(glm::radians(60.0f), ((float)(width) / height), 0.1f, 10.0f);         // 3. step
-            // ClipToNDC is done by OpenGL (division of vertices' positions by w)                                               // 4. step
+            glm::mat4 ModelToWorldMatrix = TranslationMatrix * RotationMatrix;     
+
+            glm::mat4 TransformationMatrix = camera.GetProjectionMatrix() * camera.GetWorldToViewMatrix() * ModelToWorldMatrix;
+            // ClipToNDC is done by OpenGL (division of vertices' positions by w)                                               
+
 
             shader.Bind();
-            shader.SetUniformMat4("ModelToWorldMatrix", ModelToWorldMatrix);
-            shader.SetUniformMat4("ViewToClipMatrix", ViewToClipMatrix);
+            shader.SetUniformMat4("TransformationMatrix", TransformationMatrix);
 
             renderer.Draw(va, ib, shader);
 

@@ -4,18 +4,14 @@
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec4 vertexColor;
 
-uniform mat4 ModelToWorldMatrix;
-uniform mat4 ViewToClipMatrix;
+uniform mat4 TransformationMatrix;
 
 out vec4 theColor;
 
 void main()
 {
-	vec4 v = position;
-	vec4 newpos = ModelToWorldMatrix * v;
-	vec4 projectedpos = ViewToClipMatrix * newpos;
-	
-	gl_Position = projectedpos;
+	vec4 v = TransformationMatrix * position;
+	gl_Position = v;
 	theColor = vertexColor;
 };
 
