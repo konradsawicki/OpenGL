@@ -188,5 +188,4 @@ int main(void)
         }
     }
     glfwTerminate();
-    return 0;
 }
