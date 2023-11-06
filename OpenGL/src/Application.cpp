@@ -143,6 +143,7 @@ int main(void)
         };
 
         int test;
+        int test2;
 
         VertexArray va;
         VertexBuffer vb(vertices, sizeof(vertices)/*4 * 2 * sizeof(float)*/);
