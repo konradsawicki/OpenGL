@@ -142,6 +142,9 @@ int main(void)
             20, 22, 21, 20, 23, 22, // Bottom
         };
 
+        int test;
+        int test2;
+
         VertexArray va;
         VertexBuffer vb(vertices, sizeof(vertices)/*4 * 2 * sizeof(float)*/);
         VertexBufferLayout layout;
@@ -188,5 +191,4 @@ int main(void)
         }
     }
     glfwTerminate();
-    return 0;
 }
