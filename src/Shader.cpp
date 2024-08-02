@@ -10,10 +10,14 @@
 
 namespace yon {
 
+ enum class ShaderType {
+    NONE = -1, VERTEX = 0, FRAGMENT = 1
+  };
+
 Shader::Shader(const std::string& filepath)
 	: m_filePath(filepath), m_rendererID(0) {
   ShaderProgramSource source = ParseShader(filepath);
-  m_rendererID = CreateShader(source.VertexSource, source.FragmentSource);
+  m_rendererID = CreateShader(source.vertexSource, source.fragmentSource);
 }
 
 Shader::~Shader() {
@@ -39,10 +43,6 @@ void Shader::SetUniformMat4(const std::string& name, glm::mat4 matrix) {
 
 ShaderProgramSource Shader::ParseShader(const std::string& filepath) {
   std::ifstream stream(filepath);
-
-  enum class ShaderType {
-    NONE = -1, VERTEX = 0, FRAGMENT = 1
-  };
 
   std::string line;
   std::stringstream ss[2];

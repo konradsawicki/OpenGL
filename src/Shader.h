@@ -7,10 +7,9 @@
 
 namespace yon {
 
-struct ShaderProgramSource
-{
-	std::string VertexSource;
-	std::string FragmentSource;
+struct ShaderProgramSource {
+	std::string vertexSource;
+	std::string fragmentSource;
 };
 
 class Shader {

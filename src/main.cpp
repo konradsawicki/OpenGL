@@ -155,7 +155,7 @@ int main(void)
 
         IndexBuffer ib(indices, sizeof(indices) / sizeof(*indices));
 
-        Shader shader("res/shaders/Basic.shader");
+        Shader shader("../res/shaders/Basic.shader");
 
         va.Unbind();
         vb.Unbind();
@@ -185,7 +185,7 @@ int main(void)
             {
                 angle = 0.0f;
             }
-            //angle += 0.01f;
+            angle += 0.01f;
 
             glfwSwapBuffers(window);
             glfwPollEvents();
