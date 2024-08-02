@@ -68,6 +68,14 @@ void Window::Create(int width, int height, std::string title) {
                                         break;
                                     }
                                   });
+
+  glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window)
+                                          {
+                                            auto window_data =
+                                              reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
+                                            Event event(Event::Type::WindowClosed, nullptr);
+                                            window_data->m_callback(event);
+                                          });
 }
 
 void Window::Update() {

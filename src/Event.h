@@ -36,6 +36,9 @@ struct KeyHeld {
   int key;
 };
 
+struct WindowClosed {
+};
+
 public:
 Event(Type type, void* data) : m_type(type), m_data(data) {}
 Type GetType() const { return m_type; }

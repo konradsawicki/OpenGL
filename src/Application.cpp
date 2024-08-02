@@ -183,6 +183,11 @@ void Application::OnEvent(Event &event) {
       UpdateKeyboardInput(data->key);
       break;
     }
+    case Event::Type::WindowClosed:
+    {
+      m_running = false;
+      break;
+    }
     default:
       break;
   }
