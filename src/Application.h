@@ -1,6 +1,5 @@
 
 #include "Window.h"
-#include "Renderer.h"
 
 namespace yon {
 
@@ -9,7 +8,10 @@ public:
   void Run();
 
 private:
-  Window window;
+  void OnEvent(Event& event);
+private:
+  Window m_window;
+  bool m_running = true;
 };
 
 }

@@ -7,6 +7,8 @@ Shader.cpp
 VertexArray.cpp
 VertexBuffer.cpp
 VertexBufferLayout.cpp
+Window.cpp
+GraphicsContext.cpp
 Application.cpp
 Core.cpp
 )
