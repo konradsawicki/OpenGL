@@ -1,14 +1,20 @@
-#pragma once
+#ifndef VERTEXBUFFER_H
+#define VERTEXBUFFER_H
 
-class VertexBuffer
-{
-private:
-	unsigned int m_RendererID;
+namespace yon {
 
+class VertexBuffer {
 public:
 	VertexBuffer(const void* data, unsigned int size);
 	~VertexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
+
+private:
+	unsigned int m_rendererID;
 };
+
+}
+
+#endif

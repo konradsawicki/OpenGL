@@ -1,8 +1,11 @@
-#pragma once
+#ifndef SHADER_H
+#define SHADER_H
 
 #include <string>
 #include <unordered_map>
 #include "glm/glm.hpp"
+
+namespace yon {
 
 struct ShaderProgramSource
 {
@@ -10,13 +13,7 @@ struct ShaderProgramSource
 	std::string FragmentSource;
 };
 
-class Shader
-{
-private:
-	unsigned int m_RendererID;
-	std::string m_FilePath;
-	std::unordered_map<std::string, unsigned int> m_UniformLocationCache;
-
+class Shader {
 public:
 	Shader(const std::string& filepath);
 	~Shader();
@@ -33,4 +30,12 @@ private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	int GetUniformLocation(const std::string& name);
 
+private:
+	unsigned int m_rendererID;
+	std::string m_filePath;
+	std::unordered_map<std::string, unsigned int> m_uniformLocationCache;
 };
+
+}
+
+#endif

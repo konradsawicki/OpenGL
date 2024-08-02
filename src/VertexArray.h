@@ -1,13 +1,12 @@
-#pragma once
-#include "VertexBuffer.h"
+#ifndef VERTEXARRAY_H
+#define VERTEXARRAY_H
 
+namespace yon {
 
 class VertexBufferLayout;
+class VertexBuffer;
 
-class VertexArray
-{
-private:
-	unsigned int m_RendererID;
+class VertexArray {
 public:
 	VertexArray();
 	~VertexArray();
@@ -16,4 +15,12 @@ public:
 
 	void Bind() const;
 	void Unbind() const;
+
+private:
+	unsigned int m_rendererID;
+
 };
+
+}
+
+#endif

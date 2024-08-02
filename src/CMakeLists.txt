@@ -1,5 +1,5 @@
 set(SRC_LIST
-Application.cpp
+main.cpp
 Camera.cpp
 IndexBuffer.cpp
 Renderer.cpp
@@ -8,11 +8,12 @@ VertexArray.cpp
 VertexBuffer.cpp
 VertexBufferLayout.cpp
 Application.cpp
+Core.cpp
 )
 
 add_executable(Tachyon ${SRC_LIST})
 
-target_include_directories(Tachyon PRIVATE 
+target_include_directories(Tachyon PRIVATE
 ${DEPENDENCIES_DIR}/glad/include
 ${DEPENDENCIES_DIR}/glfw/include
 ${DEPENDENCIES_DIR}/glm
