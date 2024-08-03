@@ -23,11 +23,7 @@ void Window::Create(int width, int height, std::string title) {
                                           auto window_data =
                                             reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
-                                          Event::MouseMoved data;
-                                          data.pos_x = xpos;
-                                          data.pos_y = ypos;
-
-                                          Event event(Event::Type::MouseMoved, &data);
+                                          MouseMoveEvent event(xpos, ypos);
                                           window_data->m_callback(event);
                                         });
 
@@ -39,27 +35,21 @@ void Window::Create(int width, int height, std::string title) {
                                     switch(action) {
                                       case GLFW_PRESS:
                                       {
-                                        Event::KeyPressed data;
-                                        data.key = key;
-                                        Event event(Event::Type::KeyPressed, &data);
+                                        KeyPressEvent event(key);
                                         window_data->m_callback(event);
                                         break;
                                       }
 
                                       case GLFW_RELEASE:
                                       {
-                                        Event::KeyReleased data;
-                                        data.key = key;
-                                        Event event(Event::Type::KeyReleased, &data);
+                                        KeyReleaseEvent event(key);
                                         window_data->m_callback(event);
                                         break;
                                       }
 
                                       case GLFW_REPEAT:
                                       {
-                                        Event::KeyHeld data;
-                                        data.key = key;
-                                        Event event(Event::Type::KeyHeld, &data);
+                                        KeyHoldEvent event(key);
                                         window_data->m_callback(event);
                                         break;
                                       }
@@ -73,7 +63,7 @@ void Window::Create(int width, int height, std::string title) {
                                           {
                                             auto window_data =
                                               reinterpret_cast<WindowData*>(glfwGetWindowUserPointer(window));
-                                            Event event(Event::Type::WindowClosed, nullptr);
+                                            WindowCloseEvent event;
                                             window_data->m_callback(event);
                                           });
 }

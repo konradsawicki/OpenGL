@@ -169,21 +169,19 @@ void Application::Run() {
   }
 }
 
-void Application::OnEvent(Event &event) {
+void Application::OnEvent(IEvent &event) {
   switch (event.GetType()) {
-    case Event::Type::MouseMoved:
+    case EventType::MouseMove:
     {
-      auto data = reinterpret_cast<Event::MouseMoved*>(event.GetData());
-      UpdateMouseInput(data->pos_x, data->pos_y);
+      UpdateMouseInput(static_cast<MouseMoveEvent&>(event).m_posx, static_cast<MouseMoveEvent&>(event).m_posy);
       break;
     }
-    case Event::Type::KeyHeld:
+    case EventType::KeyHold:
     {
-      auto data = reinterpret_cast<Event::KeyHeld*>(event.GetData());
-      UpdateKeyboardInput(data->key);
+      UpdateKeyboardInput(static_cast<KeyHoldEvent&>(event).key);
       break;
     }
-    case Event::Type::WindowClosed:
+    case EventType::WindowClose:
     {
       m_running = false;
       break;

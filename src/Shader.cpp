@@ -10,7 +10,7 @@
 
 namespace yon {
 
- enum class ShaderType {
+enum class ShaderType {
     NONE = -1, VERTEX = 0, FRAGMENT = 1
   };
 

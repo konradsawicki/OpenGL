@@ -15,7 +15,7 @@ public:
   virtual ~Window();
   void Create(int width, int height, std::string title);
 
-  void SetCallback(std::function<void(Event&)> callback) { m_data.m_callback = callback; }
+  void SetCallback(std::function<void(IEvent&)> callback) { m_data.m_callback = callback; }
   void Update();
 
 private:
@@ -23,7 +23,7 @@ private:
   GraphicsContext m_context;
 
   struct WindowData {
-    std::function<void(Event&)> m_callback;
+    std::function<void(IEvent&)> m_callback;
   };
   WindowData m_data;
 };

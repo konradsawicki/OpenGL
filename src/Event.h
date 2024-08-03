@@ -3,50 +3,69 @@
 
 namespace yon {
 
-class Event {
+enum class EventType {
+  MouseMove, MouseButtonPress, MouseButtonRelease,
+  KeyPress, KeyRelease, KeyHold,
+  WindowResize, WindowClose
+};
+
+class IEvent {
 public:
-enum class Type {
-  MouseMoved, MouseButtonPressed, MouseButtonReleased,
-  KeyPressed, KeyReleased, KeyHeld,
-  WindowResized, WindowClosed
-};
-
-struct MouseMoved {
-  double pos_x;
-  double pos_y;
-};
-
-struct MouseButtonPressed {
-  int key;
-};
-
-struct MouseButtonReleased {
-  int key;
-};
-
-struct KeyPressed {
-  int key;
-};
-
-struct KeyReleased {
-  int key;
-};
-
-struct KeyHeld {
-  int key;
-};
-
-struct WindowClosed {
-};
+  virtual EventType GetType() const = 0;
 
 public:
-Event(Type type, void* data) : m_type(type), m_data(data) {}
-Type GetType() const { return m_type; }
-void* GetData() const { return m_data; }
+  bool handled = false;
+};
 
-private:
-  Type m_type;
-  void* m_data;
+class MouseMoveEvent : public IEvent {
+public:
+  MouseMoveEvent(double posx, double posy) : m_posx(posx), m_posy(posy) {}
+
+  static EventType GetStaticType() { return EventType::MouseMove; }
+  virtual EventType GetType() const { return GetStaticType(); }
+
+public:
+  double m_posx;
+  double m_posy;
+};
+
+class IKeyEvent : public IEvent {
+public:
+  IKeyEvent(int key) : m_key(key) {}
+
+public:
+  int m_key;
+};
+
+class KeyPressEvent : public IKeyEvent {
+public:
+  KeyPressEvent(int key) : IKeyEvent(key) {}
+
+  static EventType GetStaticType() { return EventType::KeyPress; }
+  virtual EventType GetType() const { return GetStaticType(); }
+};
+
+class KeyReleaseEvent : public IKeyEvent {
+public:
+  KeyReleaseEvent(int key) : IKeyEvent(key) {}
+
+  static EventType GetStaticType() { return EventType::KeyRelease; }
+  virtual EventType GetType() const { return GetStaticType(); }
+};
+
+class KeyHoldEvent : public IKeyEvent {
+public:
+  KeyHoldEvent(int key) : IKeyEvent(key) {}
+
+  static EventType GetStaticType() { return EventType::KeyHold; }
+  virtual EventType GetType() const { return GetStaticType(); }
+};
+
+
+class WindowCloseEvent : public IEvent {
+public:
+  static EventType GetStaticType() { return EventType::WindowClose; }
+  virtual EventType GetType() const { return GetStaticType(); }
 };
 
 }

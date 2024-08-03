@@ -8,7 +8,7 @@ public:
   void Run();
 
 private:
-  void OnEvent(Event& event);
+  void OnEvent(IEvent& event);
 private:
   Window m_window;
   bool m_running = true;
