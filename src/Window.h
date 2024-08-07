@@ -16,7 +16,9 @@ public:
   void Create(int width, int height, std::string title);
 
   void SetCallback(std::function<void(IEvent&)> callback) { m_data.m_callback = callback; }
-  void Update();
+  void OnUpdate();
+
+  GLFWwindow* GetNativeWindow() const { return m_window; }
 
 private:
   GLFWwindow* m_window;

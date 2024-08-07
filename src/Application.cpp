@@ -20,20 +20,9 @@
 #include "Camera.h"
 
 namespace yon {
-
-static const int width = 1280;
-static const int height = 720;
-static const float AspectRatio = (float)width / height;
-
-static Camera camera(60.0f, AspectRatio, 0.1f, 10.0f);
-
-static double mouse_xpos, mouse_ypos;
-static void UpdateMouseInput(double xpos, double ypos) {
-  camera.Rotate(glm::vec2(xpos, ypos));
-}
-
-static void UpdateKeyboardInput(int key) {
-  camera.Translate(key);
+Application::Application()
+  : m_cameraControl(1280.f / 720.f) {
+  m_app = this;
 }
 
 void Application::Run() {
@@ -146,13 +135,20 @@ void Application::Run() {
     Renderer renderer;
     float angle = 0.0f;
     /* Loop until the user closes the window */
+
+    auto lastTime = glfwGetTime();
     while (m_running) {
       renderer.Clear();
+
+      auto currentTime = glfwGetTime();
+      auto deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
 
       glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
       glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 1.0f));
       glm::mat4 ModelToWorldMatrix = TranslationMatrix * RotationMatrix;
 
+      const auto& camera = m_cameraControl.GetCamera();
       glm::mat4 TransformationMatrix = camera.GetProjectionMatrix() * camera.GetViewMatrix() * ModelToWorldMatrix;
 
       shader.Bind();
@@ -164,7 +160,8 @@ void Application::Run() {
         angle = 0.0f;
       angle += 0.01f;
 
-      m_window.Update();
+      m_cameraControl.OnUpdate(deltaTime);
+      m_window.OnUpdate();
     }
   }
 }
@@ -173,12 +170,10 @@ void Application::OnEvent(IEvent &event) {
   switch (event.GetType()) {
     case EventType::MouseMove:
     {
-      UpdateMouseInput(static_cast<MouseMoveEvent&>(event).m_posx, static_cast<MouseMoveEvent&>(event).m_posy);
       break;
     }
     case EventType::KeyHold:
     {
-      UpdateKeyboardInput(static_cast<KeyHoldEvent&>(event).key);
       break;
     }
     case EventType::WindowClose:

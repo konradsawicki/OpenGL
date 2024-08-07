@@ -11,8 +11,8 @@
 namespace yon {
 
 enum class ShaderType {
-    NONE = -1, VERTEX = 0, FRAGMENT = 1
-  };
+  NONE = -1, VERTEX = 0, FRAGMENT = 1
+};
 
 Shader::Shader(const std::string& filepath)
 	: m_filePath(filepath), m_rendererID(0) {

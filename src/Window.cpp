@@ -68,7 +68,7 @@ void Window::Create(int width, int height, std::string title) {
                                           });
 }
 
-void Window::Update() {
+void Window::OnUpdate() {
   m_context.SwapBuffers();
   glfwPollEvents();
 }

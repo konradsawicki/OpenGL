@@ -10,6 +10,7 @@ VertexBufferLayout.cpp
 Window.cpp
 GraphicsContext.cpp
 Application.cpp
+CameraController.cpp
 Core.cpp
 )
 
