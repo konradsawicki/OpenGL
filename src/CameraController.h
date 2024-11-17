@@ -22,7 +22,7 @@ private:
 private:
   Camera m_camera;
   float m_translationSpeed = 5.f;
-  float m_rotationSpeed = 1.f;
+  float m_rotationSpeed = 0.5f;
 };
 
 }

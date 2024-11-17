@@ -20,6 +20,8 @@ void Window::Create(int width, int height, std::string title) {
   m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   m_context.Create(m_window);
 
+  glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
   glfwSetWindowUserPointer(m_window, &m_data);
 
   glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos)
