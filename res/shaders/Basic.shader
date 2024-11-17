@@ -13,7 +13,7 @@ void main()
 	vec4 v = TransformationMatrix * position;
 	gl_Position = v;
 	theColor = vertexColor;
-};
+}
 
 #shader fragment
 #version 330 core
@@ -26,4 +26,4 @@ in vec4 theColor;
 void main()
 {
    color = theColor;
-};
+}
