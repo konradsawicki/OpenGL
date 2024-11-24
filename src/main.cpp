@@ -2,7 +2,6 @@
 #include "Application.h"
 
 int main(int argc, char** argv) {
-  yon::Application* app = new yon::Application();
+  auto app = yon::Application::Get();
   app->Run();
-  delete app;
 }

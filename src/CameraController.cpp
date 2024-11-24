@@ -16,7 +16,7 @@ void CameraController::OnUpdate(float deltaTime) {
 }
 
 void CameraController::Translate(float deltaTime) {
-  auto window = Application::Get().GetMainWindow().GetNativeWindow();
+  auto window = Application::Get()->GetMainWindow().GetNativeWindow();
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
     auto eye = m_camera.GetEyePos();
@@ -43,7 +43,7 @@ void CameraController::Translate(float deltaTime) {
 }
 
 void CameraController::Rotate(float deltaTime) {
-  auto window = Application::Get().GetMainWindow().GetNativeWindow();
+  auto window = Application::Get()->GetMainWindow().GetNativeWindow();
 
   int width, height;
   glfwGetWindowSize(window, &width, &height);

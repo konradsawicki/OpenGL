@@ -1,4 +1,3 @@
-
 #define GLFW_INCLUDE_NONE
 #include "Application.h"
 
@@ -9,6 +8,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <mutex>
+#include <atomic>
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
@@ -20,14 +21,28 @@
 #include "Camera.h"
 
 namespace yon {
-Application::Application()
-  : m_cameraControl(1280.f / 720.f) {
-  m_app = this;
+std::atomic<std::weak_ptr<Application>> self;
+std::mutex mutex;
+
+std::shared_ptr<Application> Application::Get() {
+  auto result = self.load(std::memory_order_acquire).lock();
+  if (!result) {
+    std::lock_guard<std::mutex> guard(mutex);
+    result = self.load(std::memory_order_relaxed).lock();
+    if (!result) {
+      struct make_shared_enabler: public Application {
+        make_shared_enabler() : Application() {}
+      };
+      result = std::make_shared<make_shared_enabler>();
+      self.store(result, std::memory_order_release);
+    }
+  }
+  return result;
 }
 
 void Application::Run() {
   m_window.Create(1280, 720, "Tachyon");
-  m_window.SetCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+  m_window.SetCallback(std::bind(&Application::OnEvent, shared_from_this(), std::placeholders::_1));
 
   glEnable(GL_DEPTH_TEST); // Enable depth buffer
 
@@ -140,8 +155,8 @@ void Application::Run() {
     while (m_running) {
       renderer.Clear();
 
-      auto currentTime = glfwGetTime();
-      auto deltaTime = currentTime - lastTime;
+      const auto currentTime = glfwGetTime();
+      const auto deltaTime = currentTime - lastTime;
       lastTime = currentTime;
 
       glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
@@ -158,7 +173,7 @@ void Application::Run() {
 
       if (angle > 360.0f)
         angle = 0.0f;
-      angle += 0.01f;
+      angle += 0.001f;
 
       m_cameraControl.OnUpdate(deltaTime);
       m_window.OnUpdate();
