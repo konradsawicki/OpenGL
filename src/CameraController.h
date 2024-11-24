@@ -9,7 +9,7 @@ class CameraController {
 public:
   CameraController(float aspectRatio, const glm::vec3& eyePos = {0.f, 0.f, 0.f},
     const glm::vec3& viewDir = {0.f, 0.f, -1.f}, const glm::vec3& upDir = {0.f, 1.f, 0.f},
-    float FOVy = 90.f, float near = 0.01f, float far = 1000.f);
+    float FOVy = 60.f, float near = 0.01f, float far = 1000.f);
 
   void OnUpdate(float deltaTime);
 
